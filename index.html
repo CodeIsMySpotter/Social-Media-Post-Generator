@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Social Media Post Generator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <div class="logo">
+          <i data-lucide="image" class="logo-icon"></i>
+          <h1>PostGen</h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="generate-btn">
+            <i data-lucide="download"></i>
+            Generate Image
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- Controls Panel -->
+        <aside class="controls-panel panel glass">
+          <div class="control-group">
+            <label for="format-select">Format</label>
+            <div class="select-wrapper">
+              <select id="format-select">
+                <option value="4:5" data-width="1080" data-height="1350">IG Carousel (1080x1350)</option>
+                <option value="1:1" data-width="1080" data-height="1080">IG Square (1080x1080)</option>
+                <option value="9:16" data-width="1080" data-height="1920">IG Story/Reels (1080x1920)</option>
+                <option value="16:9" data-width="1920" data-height="1080">Twitter / Web (1920x1080)</option>
+              </select>
+              <i data-lucide="chevron-down" class="select-icon"></i>
+            </div>
+          </div>
+          
+          <div class="control-group full-height">
+            <label for="html-input">HTML & CSS Content</label>
+            <textarea id="html-input" placeholder="Paste your HTML here..."></textarea>
+          </div>
+        </aside>
+
+        <!-- Preview Panel -->
+        <section class="preview-panel panel">
+          <div class="preview-header">
+            <h3>Live Preview</h3>
+            <span class="preview-resolution" id="resolution-label">1080 x 1350</span>
+          </div>
+          <div class="preview-workspace" id="preview-workspace">
+            <div class="preview-wrapper" id="preview-wrapper">
+              <div class="preview-content" id="preview-content">
+                <!-- HTML content will be injected here -->
+                <div class="placeholder-content">
+                  <i data-lucide="code-2"></i>
+                  <p>Paste HTML to see preview</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Main Script -->
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

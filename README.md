@@ -1,26 +1,28 @@
-# 📸 HTML-to-Carousel (SnapSlide)
+# HTML-to-Carousel (PostGen)
 
-> **A lightweight CLI tool that renders plain HTML/CSS files into high-resolution social media carousels.**
+> A lightweight web application that renders plain HTML/CSS into high-resolution social media images.
 
-An open-source Node.js utility powered by **Puppeteer** that automatically converts standard HTML/CSS templates into pixel-perfect PNG images for social platforms (Instagram, TikTok, LinkedIn, X).
+An open-source, client-side utility powered by Vite and html-to-image that automatically converts standard HTML/CSS templates into pixel-perfect PNG images for social platforms (Instagram, TikTok, LinkedIn, X).
 
 Designed for developers, technical writers, and content creators who want to design slides using standard web technologies instead of graphic design software.
 
 ---
 
-### ✨ Key Features
+### Key Features
 
-- **🎨 Pure Web Tech**: Style your slides with standard HTML5, CSS3, Flexbox, Grid, Tailwind, or custom Google Fonts.
-- **📐 Social-Ready Ratio**: Pre-configured for standard 4:5 aspect ratio (1080x1350px) and Retina-grade output (`deviceScaleFactor: 2`).
-- **⚡ Fast & Headless**: Batch-converts folders of `.html` files into crisp `.png` image sets in seconds via Puppeteer.
-- **🤖 Framework Agnostic**: Works with any language, framework, or AI coding workflow (Cursor, Claude Code, Copilot).
-- **🛠️ Zero Design Friction**: Skip Canva and Figma—build, update, and version-control your slides directly in your code editor.
+- Pure Web Tech: Style your slides with standard HTML5, CSS3, Flexbox, Grid, or custom Google Fonts.
+- Social-Ready Ratios: Pre-configured for standard formats like IG Carousel (4:5), Square (1:1), Story (9:16), and Twitter (16:9).
+- Fast and Lightweight: Runs entirely in the browser using html-to-image. No backend or heavy headless browsers required.
+- Framework Agnostic: Paste any standard HTML/CSS into the generator.
+- Zero Design Friction: Skip Canva and Figma; build, update, and generate your slides directly from code.
 
 ---
 
-### 🛠️ Tech Stack
+### Tech Stack
 
-- **Runtime**: Node.js
-- **Rendering Engine**: Puppeteer (Headless Chrome)
-- **Input**: Plain HTML/CSS files
-- **Output**: 1080x1350px PNG Images
+- Runtime: Browser (Client-side)
+- Build Tool: Vite
+- UI: Vanilla JS & CSS
+- Rendering Engine: html-to-image
+- Input: Plain HTML/CSS code
+- Output: High-resolution PNG Images
