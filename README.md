@@ -22,7 +22,8 @@ Designed for developers, technical writers, and content creators who want to des
 
 - Runtime: Browser (Client-side)
 - Build Tool: Vite
-- UI: Vanilla JS & CSS
+- UI: React & CSS
+- Backend: .NET
 - Rendering Engine: html-to-image
 - Input: Plain HTML/CSS code
 - Output: High-resolution PNG Images

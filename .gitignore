@@ -2,3 +2,25 @@ node_modules
 dist
 .env
 .DS_Store
+
+# .NET Core / C#
+[Bb]in/
+[Oo]bj/
+*.user
+*.userprefs
+*.suo
+
+# Odrzucane bazy danych (żeby nie pchać danych testowych i dev na GitHub)
+*.db
+*.db-shm
+*.db-wal
+app.db
+local_prod.db
+
+# Konfiguracje środowisk (Rider, Visual Studio, VS Code)
+.idea/
+.vs/
+.vscode/
+
+# Pliki testowe
+TestResults/
