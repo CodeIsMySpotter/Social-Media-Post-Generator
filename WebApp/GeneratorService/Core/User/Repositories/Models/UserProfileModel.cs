@@ -5,7 +5,7 @@ namespace GeneratorService.Core.User.Repositories.Models;
 
 public class UserProfileModel {
     [Key]
-    [ForeignKey(nameof(User))]
+    [ForeignKey(nameof(UserAuthModel))]
     public Guid Id { get; set; }
     
     public string Name { get; set; } = string.Empty;

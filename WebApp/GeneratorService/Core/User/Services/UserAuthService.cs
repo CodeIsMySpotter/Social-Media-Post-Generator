@@ -1,4 +1,4 @@
-﻿
+
 using GeneratorService.Core.User.Exceptions;
 using GeneratorService.Core.User.Repositories;
 using GeneratorService.Core.User.Repositories.Models;
@@ -19,9 +19,8 @@ public interface IUserAuthService
 
 public class UserAuthService(
     IUserAuthRepository _UserAuthRepository,
-    IUserJwtService _userJwtService
-
-
+    IUserJwtService _userJwtService,
+    IUserProfileService _userProfileService
 ) : IUserAuthService {
 
     public async Task<string> RegisterAsync(RegisterRequest request)
@@ -39,6 +38,8 @@ public class UserAuthService(
         };
 
         await _UserAuthRepository.CreateAsync(newUser);
+        await _userProfileService.CreateProfileAsync(newUser.Id);
+        
         return _userJwtService.GetToken(newUser);
     }
 

@@ -1,0 +1,6 @@
+@GeneratorService_HostAddress = http://localhost:5016
+
+GET {{GeneratorService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

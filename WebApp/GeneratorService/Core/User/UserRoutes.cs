@@ -1,4 +1,4 @@
-﻿using GeneratorService.Core.User.Requests;
+using GeneratorService.Core.User.Requests;
 using GeneratorService.Core.User.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +23,7 @@ public static class UserAuthRoutes {
             context.Response.Cookies.Append("access_token", token, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true, // Wymaga HTTPS
+                Secure = true,
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(7)
             });
@@ -47,7 +47,21 @@ public static class UserAuthRoutes {
 
 public static class UserProfileRoutes {
     public static void RegisterUserProfileRoutes(this IEndpointRouteBuilder app) {
+        app.MapGet("/profile", async (IUserProfileService profileService, HttpContext context) => {
+            var userIdClaim = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value 
+                              ?? context.User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
 
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId)) {
+                return Results.Unauthorized();
+            }
+
+            var profile = await profileService.GetProfileByIdAsync(userId);
+            if (profile == null) {
+                return Results.NotFound(new { message = "Profile not found." });
+            }
+
+            return Results.Ok(profile);
+        }).RequireAuthorization();
     }        
 }
 

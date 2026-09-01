@@ -1,10 +1,10 @@
-﻿
+
 
 namespace GeneratorService.Core.User.Configuration;
     
 public class AuthServiceConfiguration {
-    public required string Secret { get; set; }
-    public required int ExpiryDays { get; set; }
-    public required string Issuer { get; set; }
-    public required string Audience {get; set; }
+    public string Secret { get; set; } = string.Empty;
+    public int ExpiryDays { get; set; }
+    public string Issuer { get; set; } = string.Empty;
+    public string Audience {get; set; } = string.Empty;
 }

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using GeneratorService.Core.Global.Database;
 using GeneratorService.Core.User;
 using GeneratorService.Core.User.Configuration;
@@ -32,6 +32,10 @@ void SetupServices(WebApplicationBuilder builder) {
     builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
     builder.Services.AddScoped<IUserAuthService, UserAuthService>();
     builder.Services.AddScoped<IUserJwtService, UserJwtService>();
+
+    builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+    builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+    builder.Services.AddScoped<IUserProfileNameGeneratorService, UserProfileNameGeneratorService>();
 
     // Exception Handlers
     builder.Services.AddExceptionHandler<UserAuthExceptionHandler>();
@@ -87,6 +91,7 @@ void ConfigurePipeline(WebApplication app) {
     app.UseAuthentication();
     app.UseAuthorization();
     app.RegisterUserAuthRoutes();
+    app.RegisterUserProfileRoutes();
 }
 
 var builder = WebApplication.CreateBuilder(args);

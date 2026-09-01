@@ -8,4 +8,5 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     public DbSet<UserAuthModel> UserAuth { get; set; }
     public DbSet<UserProfileModel> UserProfiles { get; set; }
+    public DbSet<UserContentModel> UserContent { get; set; }
 }
