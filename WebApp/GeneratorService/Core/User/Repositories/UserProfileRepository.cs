@@ -8,6 +8,7 @@ public interface IUserProfileRepository {
     Task<UserProfileModel?> GetByIdAsync(Guid id);
     Task<UserProfileModel?> GetByEmailAsync(string email);
     Task CreateAsync(UserProfileModel profile);
+    Task UpdateAsync(UserProfileModel profile);
 }
 
 public class UserProfileRepository(AppDbContext _context) : IUserProfileRepository {
@@ -27,6 +28,12 @@ public class UserProfileRepository(AppDbContext _context) : IUserProfileReposito
 
     public async Task CreateAsync(UserProfileModel profile) {
         await _context.UserProfiles.AddAsync(profile);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(UserProfileModel profile) {
+        profile.UpdatedAt = DateTime.UtcNow;
+        _context.UserProfiles.Update(profile);
         await _context.SaveChangesAsync();
     }
 }

@@ -106,6 +106,31 @@ public class UserProfileEndpointsTests : IClassFixture<WebApplicationFactory<Pro
         Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
+    [Fact]
+    public async Task UpdateProfile_WhenAuthenticated_UpdatesSuccessfully()
+    {
+        // Arrange
+        var email = $"test_profile2_{Guid.NewGuid()}@example.com";
+        var request = new RegisterRequest(email, "SuperSecurePassword123!");
+        var registerResponse = await _client.PostAsJsonAsync("/register", request);
+        registerResponse.EnsureSuccessStatusCode();
+
+        var tokenCookie = registerResponse.Headers.GetValues("Set-Cookie").FirstOrDefault(c => c.StartsWith("access_token="));
+        var tokenValue = tokenCookie!.Split(';')[0];
+
+        var updateRequestMsg = new HttpRequestMessage(HttpMethod.Put, "/profile");
+        updateRequestMsg.Headers.Add("Cookie", tokenValue);
+        updateRequestMsg.Content = JsonContent.Create(new UpdateProfileRequest { Name = "NewName", AvatarUrl = "http://avatar.com/1.png" });
+
+        // Act
+        var updateResponse = await _client.SendAsync(updateRequestMsg);
+
+        // Assert
+        updateResponse.EnsureSuccessStatusCode();
+        var content = await updateResponse.Content.ReadAsStringAsync();
+        Assert.Contains("Profile updated successfully", content);
+    }
+
     public void Dispose()
     {
         _connection.Close();

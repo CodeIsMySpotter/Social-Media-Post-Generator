@@ -8,7 +8,9 @@ namespace GeneratorService.Core.User.Repositories;
 public interface IUserContentRepository {
     Task<UserContentModel?> GetByContentNameAndUserIdAsync(string contentName, Guid userId);
     Task<UserContentModel?> GetByIdAsync(Guid id);
+    Task<List<UserContentModel>> GetAllByUserIdAsync(Guid userId);
     Task<bool> CreateAsync(UserContentModel userContentModel);
+    Task<bool> UpdateAsync(UserContentModel userContentModel);
     Task<bool> DeleteAsync(Guid userId, string contentName);
 }
 
@@ -46,4 +48,16 @@ public class UserContentRepository(AppDbContext _context) : IUserContentReposito
         return false;
     }
 
+    public async Task<List<UserContentModel>> GetAllByUserIdAsync(Guid userId) {
+        return await _context.UserContent
+            .Where(c => c.UserId == userId)
+            .ToListAsync();
+    }
+
+    public async Task<bool> UpdateAsync(UserContentModel userContent) {
+        userContent.UpdatedAt = DateTime.UtcNow;
+        _context.UserContent.Update(userContent);
+        var result = await _context.SaveChangesAsync();
+        return result > 0;
+    }
 }

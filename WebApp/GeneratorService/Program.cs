@@ -1,5 +1,7 @@
 using System.Text;
 using GeneratorService.Core.Global.Database;
+using GeneratorService.Core.Generator;
+using GeneratorService.Core.Generator.Services;
 using GeneratorService.Core.User;
 using GeneratorService.Core.User.Configuration;
 using GeneratorService.Core.User.Repositories;
@@ -8,7 +10,6 @@ using GeneratorService.Core.User.Services.Subservices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
 
 using GeneratorService.Core.Global.ExceptionHandlers;
 using GeneratorService.Core.User.ExceptionHandlers;
@@ -37,6 +38,11 @@ void SetupServices(WebApplicationBuilder builder) {
     builder.Services.AddScoped<IUserProfileService, UserProfileService>();
     builder.Services.AddScoped<IUserProfileNameGeneratorService, UserProfileNameGeneratorService>();
 
+    builder.Services.AddScoped<IUserContentRepository, UserContentRepository>();
+    builder.Services.AddScoped<IUserContentService, UserContentService>();
+    
+    builder.Services.AddScoped<IMediaGeneratorService, MediaGeneratorService>();
+
     // Exception Handlers
     builder.Services.AddExceptionHandler<UserAuthExceptionHandler>();
     builder.Services.AddExceptionHandler<DefaultGlobalExceptionHandler>();
@@ -45,6 +51,9 @@ void SetupServices(WebApplicationBuilder builder) {
     builder.Services.AddAuthorization();
     builder.Services.AddOpenApi();
 
+    builder.Services.ConfigureHttpJsonOptions(options => {
+        options.SerializerOptions.TypeInfoResolverChain.Insert(0, GeneratorService.Core.Global.Configuration.AppJsonSerializerContext.Default);
+    });
 }
 
 void SetupJwtLogic(WebApplicationBuilder builder) {
@@ -92,6 +101,8 @@ void ConfigurePipeline(WebApplication app) {
     app.UseAuthorization();
     app.RegisterUserAuthRoutes();
     app.RegisterUserProfileRoutes();
+    app.RegisterUserContentRoutes();
+    app.RegisterGeneratorRoutes();
 }
 
 var builder = WebApplication.CreateBuilder(args);
