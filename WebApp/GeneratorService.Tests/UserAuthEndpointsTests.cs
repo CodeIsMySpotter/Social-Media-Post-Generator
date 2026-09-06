@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
 using System.Net;
 using GeneratorService.Core.User.Requests;
@@ -6,17 +6,22 @@ using Microsoft.Extensions.DependencyInjection;
 using GeneratorService.Core.Global.Database;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using GeneratorService.Core.User.Repositories.Models;
+using Microsoft.Data.Sqlite;
+using System.Data.Common;
 
 namespace GeneratorService.Tests;
 
-public class UserAuthEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
+public class UserAuthEndpointsTests : IClassFixture<WebApplicationFactory<Program>>, IDisposable
 {
     private readonly WebApplicationFactory<Program> _factory;
     private readonly HttpClient _client;
+    private readonly SqliteConnection _connection;
 
     public UserAuthEndpointsTests(WebApplicationFactory<Program> factory)
     {
-        var dbName = $"test_{Guid.NewGuid()}.db";
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
         
         _factory = factory.WithWebHostBuilder(builder =>
         {
@@ -24,15 +29,21 @@ public class UserAuthEndpointsTests : IClassFixture<WebApplicationFactory<Progra
             {
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-
                 if (descriptor != null)
                 {
                     services.Remove(descriptor);
                 }
 
+                var dbConnectionDescriptor = services.SingleOrDefault(
+                    d => d.ServiceType == typeof(DbConnection));
+                if (dbConnectionDescriptor != null)
+                {
+                    services.Remove(dbConnectionDescriptor);
+                }
+
                 services.AddDbContext<AppDbContext>(options =>
                 {
-                    options.UseSqlite($"Data Source={dbName}");
+                    options.UseSqlite(_connection);
                 });
             });
         });
@@ -102,6 +113,12 @@ public class UserAuthEndpointsTests : IClassFixture<WebApplicationFactory<Progra
         Assert.True(response.Headers.Contains("Set-Cookie"), "Response should contain Set-Cookie header.");
         var cookies = response.Headers.GetValues("Set-Cookie");
         Assert.Contains(cookies, c => c.Contains("access_token=") && c.Contains("expires="));
+    }
+
+    public void Dispose()
+    {
+        _connection.Close();
+        _connection.Dispose();
     }
 }
 
